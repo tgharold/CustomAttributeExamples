@@ -1,5 +1,7 @@
 using System;
 using System.ComponentModel;
+using System.Linq;
+using System.Reflection;
 using Xunit;
 
 namespace StringConstantsExample
@@ -32,6 +34,20 @@ namespace StringConstantsExample
                 y => y.Description
             );
             Assert.Equal("Charlie Charles", result);
+        }
+
+        [Fact]
+        public void Get_both_descriptions_back()
+        {
+            var fields = typeof(StringConstants1)
+                    .GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy)
+                    .ToList();
+
+            var stringFields = fields.Where(x => x.FieldType == typeof(string)).ToList();
+
+            var literalStringFields = stringFields.Where(x => x.IsLiteral).ToList();
+            
+            Assert.Equal(2, literalStringFields.Count);
         }
     }
 }
