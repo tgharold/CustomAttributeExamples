@@ -18,8 +18,11 @@ namespace StringConstantsExample
             {
                 return default(TOut);
             }
-            var att = fieldInfo.GetCustomAttributes(typeof(TAttribute), true).FirstOrDefault() as TAttribute;
-            return att != null ? valueSelector(att) : default(TOut);
+
+            return fieldInfo.GetCustomAttributes(typeof(TAttribute), true)
+                .FirstOrDefault() is TAttribute att 
+                ? valueSelector(att) 
+                : default(TOut);
         }
     }
 }
