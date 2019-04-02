@@ -49,5 +49,32 @@ namespace StringConstantsExample
             
             Assert.Equal(2, literalStringFields.Count);
         }
+
+        [Fact]
+        public void Build_list_of_field_attributes()
+        {
+            var fields = typeof(StringConstants1)
+                .GetFields(BindingFlags.Public | BindingFlags.Static)
+                .Where(x => x.FieldType == typeof(string))
+                .Where(x => x.IsLiteral)
+                .ToList();
+
+            var results = fields.Select(x => new
+                {
+                    Name = x.Name,
+                    Description = AttributeHelper.GetConstFieldAttributeValue<
+                        StringConstants1,
+                        string,
+                        DescriptionAttribute
+                        >(
+                        x.Name,
+                        y => y.Description
+                        )
+                })
+                .ToList();
+            
+            Assert.Equal(2, results.Count);
+            Assert.Contains("Charlie Charles", results.Select(x => x.Description));
+        }
     }
 }
