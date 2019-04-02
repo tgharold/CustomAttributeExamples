@@ -9,5 +9,11 @@ namespace StringConstantsExample
         
         [Description("Charlie Charles")]
         public const string Charlie = "Charles";
+
+        private const string SomethingElse = "Nada";
+
+        public const int Noddy = 5;
+        
+        public string Foo { get; set; }
     }
 }
